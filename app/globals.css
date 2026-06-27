@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-ink-100 dark:border-ink-800;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface text-ink-900 antialiased dark:bg-surface-dark dark:text-ink-50;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Visible, accessible focus ring everywhere */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-600 ring-offset-2 ring-offset-surface dark:ring-offset-surface-dark;
+  }
+
+  /* Respect reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Tabular numerals for countdowns, stats, dashboard figures */
+  .font-tabular {
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Glass surface used sparingly: sticky nav, hero mockup chrome */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:bg-ink-900/60;
+  }
+
+  .glass-border {
+    @apply border border-white/60 dark:border-white/10;
+  }
+
+  /* Subtle dotted/grid backdrop for section atmosphere */
+  .bg-grid {
+    background-image: theme('backgroundImage.grid-light');
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 40%, transparent 100%);
+  }
+  .dark .bg-grid {
+    background-image: theme('backgroundImage.grid-dark');
+  }
+
+  .shimmer-text {
+    background: linear-gradient(
+      90deg,
+      theme('colors.ink.900') 40%,
+      theme('colors.brand.500') 50%,
+      theme('colors.ink.900') 60%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 5s linear infinite;
+  }
+
+  ::selection {
+    @apply bg-brand-200 text-brand-900;
+  }
+}
+
+/* Thin, quiet scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: theme('colors.ink.200');
+  border-radius: 999px;
+  border: 2px solid transparent;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background-color: theme('colors.ink.700');
+}
