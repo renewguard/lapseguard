@@ -10,11 +10,32 @@ import { FOOTER_LINKS } from '@/lib/constants';
 
 export function Footer() {
   const [subscribed, setSubscribed] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Wire this up to your email provider (e.g. Resend, Mailchimp, ConvertKit).
-    setSubscribed(true);
+    setLoading(true);
+    setError(null);
+
+    const email = new FormData(e.currentTarget).get('email');
+
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'Failed to subscribe.');
+
+      setSubscribed(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -33,22 +54,30 @@ export function Footer() {
           {subscribed ? (
             <p className="text-sm font-medium text-safe">You&rsquo;re subscribed &mdash; thank you!</p>
           ) : (
-            <form onSubmit={handleSubscribe} className="flex w-full max-w-sm gap-2 sm:w-auto">
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <Input
-                id="newsletter-email"
-                type="email"
-                required
-                placeholder="you@company.com"
-                className="sm:w-64"
-              />
-              <Button type="submit" size="md" className="shrink-0">
-                Subscribe
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </form>
+            <div className="w-full sm:w-auto">
+              <form onSubmit={handleSubscribe} className="flex w-full max-w-sm gap-2 sm:w-auto">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email address
+                </label>
+                <Input
+                  id="newsletter-email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="you@company.com"
+                  className="sm:w-64"
+                />
+                <Button type="submit" size="md" className="shrink-0" disabled={loading}>
+                  {loading ? 'Subscribing\u2026' : 'Subscribe'}
+                  {!loading && <ArrowRight className="h-4 w-4" />}
+                </Button>
+              </form>
+              {error && (
+                <p role="alert" className="mt-2 text-xs font-medium text-danger">
+                  {error}
+                </p>
+              )}
+            </div>
           )}
         </div>
 
@@ -66,7 +95,7 @@ export function Footer() {
             </p>
             <div className="mt-5 flex gap-3">
               {[Twitter, Linkedin, Github].map((Icon, i) => (
-                <a
+                
                   key={i}
                   href="#"
                   aria-label="Social link"
@@ -78,13 +107,14 @@ export function Footer() {
             </div>
           </div>
 
-          {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
+          {(Object.entries(FOOTER_LINKS) as [string, { label: string; href: string }[]][]).map(
+            ([heading, links]) => (
             <div key={heading}>
               <h4 className="font-display text-sm font-semibold text-ink-900 dark:text-white">{heading}</h4>
               <ul className="mt-4 space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    
                       href={link.href}
                       className="text-sm text-ink-500 transition-colors hover:text-ink-900 dark:text-ink-400 dark:hover:text-white"
                     >
@@ -92,9 +122,10 @@ export function Footer() {
                     </a>
                   </li>
                 ))}
-             </ul>
+              </ul>
             </div>
-          ))}
+            )
+          )}
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-ink-100 py-8 text-sm text-ink-400 sm:flex-row dark:border-ink-800">
