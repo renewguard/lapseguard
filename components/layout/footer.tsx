@@ -95,39 +95,41 @@ export function Footer() {
             </p>
             <div className="mt-5 flex gap-3">
               {[Twitter, Linkedin, Github].map((Icon, i) => (
-                <link
+                <Link
                   key={i}
                   href="#"
                   aria-label="Social link"
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-ink-200 text-ink-500 transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-ink-700 dark:text-ink-400"
                 >
                   <Icon className="h-4 w-4" />
-                </link>
+                </Link>
               ))}
             </div>
           </div>
 
-          {(Object.entries(FOOTER_LINKS) as [string, { label: string; href: string }[]][]).map(
-            ([heading, links]) => (
-            <div key={heading}>
-              <h4 className="font-display text-sm font-semibold text-ink-900 dark:text-white">{heading}</h4>
-              <ul className="mt-4 space-y-3">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    
-                      href={link.href}
-                      className="text-sm text-ink-500 transition-colors hover:text-ink-900 dark:text-ink-400 dark:hover:text-white"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            )
-          )}
-        </div>
+         {(Object.entries(FOOTER_LINKS) as [string, { label: string; href: string }[]][]).map(
+  ([heading, links]) => (
+    <div key={heading}>
+      <h4 className="font-display text-sm font-semibold text-ink-900 dark:text-white">
+        {heading}
+      </h4>
 
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="text-sm text-ink-500 transition-colors hover:text-ink-900 dark:text-ink-400 dark:hover:text-white"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+)} 
+        </div>            
         <div className="flex flex-col items-center justify-between gap-4 border-t border-ink-100 py-8 text-sm text-ink-400 sm:flex-row dark:border-ink-800">
           <p>&copy; {new Date().getFullYear()} RenewGuard, Inc. All rights reserved.</p>
           <p>Made for the people who keep your business compliant.</p>
