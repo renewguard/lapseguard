@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://www.renewguard.com';
+  const base = 'https://renewguard10.vercel.app';
   return [
     {
       url: base,

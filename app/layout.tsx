@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500', '600'],
 });
 
-const SITE_URL = 'https://www.renewguard.com';
+const SITE_URL = 'https://renewguard10.vercel.app';
 const SITE_TITLE = 'RenewGuard \u2014 Never miss a license, permit, or insurance renewal';
 const SITE_DESCRIPTION =
   'RenewGuard helps professionals and businesses track licenses, certifications, permits, and insurance renewals automatically \u2014 with reminders, document storage, and audit-ready reports. Start free.';
