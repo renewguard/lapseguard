@@ -95,14 +95,14 @@ export function Footer() {
             </p>
             <div className="mt-5 flex gap-3">
               {[Twitter, Linkedin, Github].map((Icon, i) => (
-                <a
+                <link
                   key={i}
                   href="#"
                   aria-label="Social link"
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-ink-200 text-ink-500 transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-ink-700 dark:text-ink-400"
                 >
                   <Icon className="h-4 w-4" />
-                </a>
+                </link>
               ))}
             </div>
           </div>
