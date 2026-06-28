@@ -12,15 +12,36 @@ import { fadeUp, viewportOnce } from '@/lib/animations';
 export function Contact() {
   const [submitted, setSubmitted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    // Wire this up to your backend or form provider (e.g. an API route, Resend, HubSpot).
-    window.setTimeout(() => {
-      setLoading(false);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          company: formData.get('company'),
+          message: formData.get('message'),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'Failed to send message.');
+
       setSubmitted(true);
-    }, 900);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -83,6 +104,11 @@ export function Contact() {
                 {loading ? 'Sending\u2026' : 'Send message'}
                 {!loading && <Send className="h-4 w-4" />}
               </Button>
+              {error && (
+                <p role="alert" className="text-sm font-medium text-danger">
+                  {error}
+                </p>
+              )}
             </form>
           )}
         </motion.div>
