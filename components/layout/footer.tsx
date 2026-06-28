@@ -95,7 +95,7 @@ export function Footer() {
             </p>
             <div className="mt-5 flex gap-3">
               {[Twitter, Linkedin, Github].map((Icon, i) => (
-                
+                <a
                   key={i}
                   href="#"
                   aria-label="Social link"
