@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ShieldCheck, ArrowRight, Twitter, Linkedin, Github } from 'lucide-react';
 import { Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+<button>Get Started</button>;
 import { FOOTER_LINKS } from '@/lib/constants';
 
 export function Footer() {
