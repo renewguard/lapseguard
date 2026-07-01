@@ -108,7 +108,7 @@ export function Footer() {
           </div>
 
           {(Object.entries(FOOTER_LINKS) as [string, { label: string; href: string }[]][]).map(
-            ([heading, links]) => (
+            Object.entries(FOOTER_LINKS).map(([heading, links]) => (
             <div key={heading}>
               <h4 className="font-display text-sm font-semibold text-ink-900 dark:text-white">{heading}</h4>
               <ul className="mt-4 space-y-3">
@@ -124,7 +124,7 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-            )
+           ))
           )}
         </div>
 
